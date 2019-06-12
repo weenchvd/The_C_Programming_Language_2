@@ -10,4 +10,4 @@ set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/)
 # Include sub-projects.
 #add_subdirectory ("chapter_1.0" EXCLUDE_FROM_ALL)
 add_subdirectory ("chapter_4.1")
-
+add_subdirectory ("chapter_4.2")
