@@ -10,7 +10,7 @@ double pop(void);
 int main()
 {
 	int type;
-	double op2;
+	double op1, op2;
 	char s[MAXOP];
 
 	while ((type = getop(s)) != EOF) {
@@ -34,6 +34,14 @@ int main()
 				push(pop() / op2);
 			}
 			else printf("Error: zero divisor\n");
+			break;
+		case '%':
+			op2 = pop();
+			if (op2 != 0.0) {
+				op1 = pop();
+				push(op1 - (op2 * (int) (op1 / op2)));
+			}
+			else printf("Error: \"X mod 0\" is undefined\n");
 			break;
 		case '\n':
 			printf("\t%.8g\n", pop());
