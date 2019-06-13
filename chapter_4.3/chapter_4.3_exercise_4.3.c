@@ -1,10 +1,12 @@
-/** Chapter 4.3 | Exercise 4.3 */
+/** Chapter 4.3 | Exercise 4.4 */
 
 #include "common.h"
 
 int getop(char[]);
 void push(double);
 double pop(void);
+void printstack(int);
+void command(char[]);
 
 /* reverse Polish calculator */
 int main()
@@ -15,6 +17,9 @@ int main()
 
 	while ((type = getop(s)) != EOF) {
 		switch (type) {
+		case COMMAND:
+			command(s);
+			break;
 		case NUMBER:
 			push(atof(s));
 			break;
@@ -44,7 +49,7 @@ int main()
 			else printf("Error: \"X mod 0\" is undefined\n");
 			break;
 		case '\n':
-			printf("\t%.8g\n", pop());
+			printstack(1);
 			break;
 		default:
 			printf("Error: unknown command %s\n", s);

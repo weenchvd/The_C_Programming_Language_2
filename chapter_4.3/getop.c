@@ -9,6 +9,12 @@ int getop(char s[])
 	int i, c;
 	while ((s[0] = c = getch()) == ' ' || c == '\t');
 	s[1] = '\0';
+	if (c == '$') {
+		for (i = 0; i < MAXOP && (c = getch()) != '\n'; i++) {
+			s[i] = c;
+		}
+		return COMMAND;
+	}
 	if (!isdigit(c) && c != '.' && c != '-') {
 		return c;		//not a number
 	}
