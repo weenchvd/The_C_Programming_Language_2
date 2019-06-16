@@ -1,4 +1,4 @@
-/** Chapter 4.3 | Exercise 4.4 */
+/** Chapter 4.3 | Exercise 4.5 */
 
 #include "common.h"
 
@@ -47,6 +47,16 @@ int main()
 				push(op1 - (op2 * (int) (op1 / op2)));
 			}
 			else printf("Error: \"X mod 0\" is undefined\n");
+			break;
+		case SIN:
+			push(sin(pop()));
+			break;
+		case EXP:
+			push(exp(pop()));
+			break;
+		case POW:
+			op2 = pop();
+			push(pow(pop(), op2));
 			break;
 		case '\n':
 			printstack(1);

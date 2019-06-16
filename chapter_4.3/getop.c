@@ -15,6 +15,23 @@ int getop(char s[])
 		}
 		return COMMAND;
 	}
+	if (islower(c)) {
+		i = 0;
+		while (islower(s[++i] = c = getch()));
+		if (c != EOF) {
+			ungetch(c);
+		}
+		if (s[0] == 's' && s[1] == 'i' && s[2] == 'n') {
+			return SIN;
+		}
+		else if (s[0] == 'e' && s[1] == 'x' && s[2] == 'p') {
+			return EXP;
+		}
+		else if (s[0] == 'p' && s[1] == 'o' && s[2] == 'w') {
+			return POW;
+		}
+		else return UNKNOWNCOMMAND;
+	}
 	if (!isdigit(c) && c != '.' && c != '-') {
 		return c;		//not a number
 	}
