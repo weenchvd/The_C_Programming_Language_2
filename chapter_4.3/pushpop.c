@@ -2,6 +2,7 @@
 
 int sp = 0;			//next free stack position
 double val[MAXVAL];	//value stack
+double last;
 
 /* push: push f onto value stack*/
 void push(double f)
@@ -32,14 +33,23 @@ void printstack(int n)
 	else {
 		for (int sptemp = sp; n > 0 && sptemp > 0; n--) {
 			printf("\t%.8g\n", val[--sptemp]);
+			last = val[sptemp];
 		}
 	}
 }
 
-void command(char s[])
+void command(char s[], double var[], bool ispresentvar[])
 {
-	if (s[0] == 'p' && s[1] == 'r' && s[2] == 'i' && s[3] == 'n' && s[4] == 't') {
+	if (s[0] == 'p' && s[1] == 'r' && s[2] == 'i' && s[3] == 'n' && s[4] == 't' && s[5] == 's') {
 		printstack(sp);
+	}
+	else if (s[0] == 'p' && s[1] == 'r' && s[2] == 'i' && s[3] == 'n' && s[4] == 't' && s[5] == 'v') {
+		for (int i = 0; i < NUMVAR; i++) {
+			if (ispresentvar[i]) {
+				printf("Variable \"%c\" = %.8g\n", i + 'a', var[i]);
+			}
+		}
+		printf("\n");
 	}
 	else if (s[0] == 'c' && s[1] == 'l' && s[2] == 'e' && s[3] == 'a' && s[4] == 'r') {
 		sp = 0;

@@ -1,4 +1,4 @@
-/** Chapter 4.3 | Exercise 4.5 */
+/** Chapter 4.3 | Exercise 4.6 */
 
 #include "common.h"
 
@@ -6,7 +6,9 @@ int getop(char[]);
 void push(double);
 double pop(void);
 void printstack(int);
-void command(char[]);
+void command(char s[], double var[], bool ispresentvar[]);
+
+double last = 0.0;
 
 /* reverse Polish calculator */
 int main()
@@ -14,11 +16,29 @@ int main()
 	int type;
 	double op1, op2;
 	char s[MAXOP];
+	double var[NUMVAR];
+	bool ispresentvar[NUMVAR];
+	for (int i = 0; i < NUMVAR; i++) {
+		ispresentvar[i] = false;
+	}
+	
+	printf(
+		"--------------------------------------------------------------------------------\n"
+		"|  Reverse Polish calculator                                                   |\n"
+		"|  Use +, - , *, /, \%                                                          |\n"
+		"|  Use function sin, exp, pow                                                  |\n"
+		"|  Use variables from \"a\" to \"z\"                                               |\n"
+		"|  Use variable assignment in the form \"a=\" ... \"z=\"                           |\n"
+		"|  Use variable \"last\" for the most recently printed value                     |\n"
+		"|  Use ENTER to complete input                                                 |\n"
+		"|  Use commands $prints, $printv, $clear, $dup, $swap on a new line            |\n"
+		"|  Use CTRL+C to exit                                                          |\n"
+		"--------------------------------------------------------------------------------\n");
 
 	while ((type = getop(s)) != EOF) {
 		switch (type) {
 		case COMMAND:
-			command(s);
+			command(s, var, ispresentvar);
 			break;
 		case NUMBER:
 			push(atof(s));
@@ -57,6 +77,19 @@ int main()
 		case POW:
 			op2 = pop();
 			push(pow(pop(), op2));
+			break;
+		case ASSIGNVAR:
+			var[s[0] - 'a'] = pop();
+			ispresentvar[s[0] - 'a'] = true;
+			break;
+		case USEVAR:
+			if (ispresentvar[s[0] - 'a']) {
+				push(var[s[0] - 'a']);
+			}
+			else printf("Error: variable \"%c\" is not present\n", s[0]);
+			break;
+		case LAST:
+			push(last);
 			break;
 		case '\n':
 			printstack(1);

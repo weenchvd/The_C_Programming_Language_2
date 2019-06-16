@@ -18,10 +18,19 @@ int getop(char s[])
 	if (islower(c)) {
 		i = 0;
 		while (islower(s[++i] = c = getch()));
-		if (c != EOF) {
+		if (c == '=') {
+			return ASSIGNVAR;
+		}
+		else if (c != EOF) {
 			ungetch(c);
 		}
-		if (s[0] == 's' && s[1] == 'i' && s[2] == 'n') {
+		if (i == 1) {
+			return USEVAR;
+		}
+		if (s[0] == 'l' && s[1] == 'a' && s[2] == 's' && s[3] == 't') {
+			return LAST;
+		}
+		else if (s[0] == 's' && s[1] == 'i' && s[2] == 'n') {
 			return SIN;
 		}
 		else if (s[0] == 'e' && s[1] == 'x' && s[2] == 'p') {
