@@ -18,3 +18,4 @@
 #define ASSIGNVAR 501	//signal: assign value to variable
 #define USEVAR 502		//signal: take value of variable
 #define UNKNOWNCOMMAND -1	//signal that a unknown command was found
+#define CONTINUE -2		//signal to continue the loop

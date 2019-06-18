@@ -2,11 +2,33 @@
 
 int getch(void);
 void ungetch(int);
+void ungets(char s[]);
+
+int bufp;
 
 /* getop: get next character or numeric operand */
 int getop(char s[])
 {
 	int i, c;
+	if (bufp == 0) {
+		for (i = 0; i < MAXOP && (c = getchar()) != '\n' && c != EOF; i++) {
+			s[i] = c;
+		}
+		if (c == '\n' || c == EOF) {
+			s[i] = c;
+			if (MAXOP <= BUFSIZE) {
+				ungets(s);
+			}
+			else {
+				printf("Please enter a maximum of %d characters\n", BUFSIZE - 1);
+				return CONTINUE;
+			}
+		}
+		else {
+			printf("Please enter a maximum of %d characters\n", MAXOP - 1);
+			return CONTINUE;
+		}
+	}
 	while ((s[0] = c = getch()) == ' ' || c == '\t');
 	s[1] = '\0';
 	if (c == '$') {

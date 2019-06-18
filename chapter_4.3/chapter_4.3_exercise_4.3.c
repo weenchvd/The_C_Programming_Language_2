@@ -1,4 +1,4 @@
-/** Chapter 4.3 | Exercise 4.6 */
+/** Chapter 4.3 | Exercise 4.7 */
 
 #include "common.h"
 
@@ -25,7 +25,7 @@ int main()
 	printf(
 		"--------------------------------------------------------------------------------\n"
 		"|  Reverse Polish calculator                                                   |\n"
-		"|  Use +, - , *, /, \%                                                          |\n"
+		"|  Use +, - , *, /, %%                                                          |\n"
 		"|  Use function sin, exp, pow                                                  |\n"
 		"|  Use variables from \"a\" to \"z\"                                               |\n"
 		"|  Use variable assignment in the form \"a=\" ... \"z=\"                           |\n"
@@ -93,6 +93,9 @@ int main()
 			break;
 		case '\n':
 			printstack(1);
+			break;
+		case CONTINUE:
+			continue;
 			break;
 		default:
 			printf("Error: unknown command %s\n", s);
