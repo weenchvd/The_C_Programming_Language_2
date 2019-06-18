@@ -14,7 +14,12 @@ int getop(char s[])
 		for (i = 0; i < MAXOP && (c = getchar()) != '\n' && c != EOF; i++) {
 			s[i] = c;
 		}
-		if (c == '\n' || c == EOF) {
+		if (i >= MAXOP) {
+			while ((c = getchar()) != '\n' && c != EOF);
+			printf("Please enter a maximum of %d characters\n", MAXOP - 1);
+			return CONTINUE;
+		}
+		else if (c == '\n' || c == EOF) {
 			s[i] = c;
 			if (MAXOP <= BUFSIZE) {
 				ungets(s);
@@ -23,10 +28,6 @@ int getop(char s[])
 				printf("Please enter a maximum of %d characters\n", BUFSIZE - 1);
 				return CONTINUE;
 			}
-		}
-		else {
-			printf("Please enter a maximum of %d characters\n", MAXOP - 1);
-			return CONTINUE;
 		}
 	}
 	while ((s[0] = c = getch()) == ' ' || c == '\t');
