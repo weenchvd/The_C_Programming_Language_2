@@ -9,7 +9,7 @@ int getch(void)			//get a (possibly pushed-back) character
 		bufisfull = false;
 		return buf;
 	}
-	else getchar();		//there is error, but getch still return value getchar(), why???
+	else return getchar();
 }
 
 void ungetch(int c)		//push character back on input
@@ -17,5 +17,8 @@ void ungetch(int c)		//push character back on input
 	if (bufisfull) {
 		printf("ungetch: buffer is full\n");
 	}
-	else buf = c;
+	else {
+		bufisfull = true;
+		buf = c;
+	}
 }
