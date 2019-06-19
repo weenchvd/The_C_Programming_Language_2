@@ -5,7 +5,6 @@
 #include <stdbool.h>
 
 #define MAXOP 100		//max size of operand or operator
-#define BUFSIZE 100
 #define MAXVAL 100		//max depth of val stack
 #define NUMVAR 26		//number of variables
 
@@ -18,4 +17,3 @@
 #define ASSIGNVAR 501	//signal: assign value to variable
 #define USEVAR 502		//signal: take value of variable
 #define UNKNOWNCOMMAND -1	//signal that a unknown command was found
-#define CONTINUE -2		//signal to continue the loop
