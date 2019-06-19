@@ -1,17 +1,21 @@
 #include "common.h"
 
-char buf[BUFSIZE];		//buffer for ungetch
-int bufp = 0;			//next free position in buf
+char buf;		//buffer for ungetch
+bool bufisfull = false;
 
 int getch(void)			//get a (possibly pushed-back) character
 {
-	return (bufp > 0) ? buf[--bufp] : getchar();
+	if (bufisfull) {
+		bufisfull = false;
+		return buf;
+	}
+	else getchar();		//there is error, but getch still return value getchar(), why???
 }
 
 void ungetch(int c)		//push character back on input
 {
-	if (bufp >= BUFSIZE) {
-		printf("ungetch: too many character\n");
+	if (bufisfull) {
+		printf("ungetch: buffer is full\n");
 	}
-	else buf[bufp++] = c;
+	else buf = c;
 }

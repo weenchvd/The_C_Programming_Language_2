@@ -5,7 +5,6 @@
 #include <stdbool.h>
 
 #define MAXOP 100		//max size of operand or operator
-#define BUFSIZE 100
 #define MAXVAL 100		//max depth of val stack
 #define NUMVAR 26		//number of variables
 
