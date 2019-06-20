@@ -1,6 +1,6 @@
 #include "common.h"
 
-char buf;		//buffer for ungetch
+int buf;		//buffer for ungetch
 bool bufisfull = false;
 
 int getch(void)			//get a (possibly pushed-back) character

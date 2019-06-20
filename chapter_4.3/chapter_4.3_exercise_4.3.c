@@ -1,4 +1,4 @@
-/** Chapter 4.3 | Exercise 4.8 */
+/** Chapter 4.3 | Exercise 4.9 */
 
 #include "common.h"
 

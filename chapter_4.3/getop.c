@@ -21,7 +21,7 @@ int getop(char s[])
 		if (c == '=') {
 			return ASSIGNVAR;
 		}
-		else if (c != EOF) {
+		else {
 			ungetch(c);
 		}
 		if (i == 1) {
@@ -47,7 +47,7 @@ int getop(char s[])
 	i = 0;
 	if (c == '-') {
 		if (isdigit(s[++i] = c = getch()));
-		else if(c != EOF) {
+		else {
 			ungetch(c);
 			return '-';
 		}
@@ -59,8 +59,6 @@ int getop(char s[])
 		while (isdigit(s[++i] = c = getch()));
 	}
 	s[i] = '\0';
-	if (c != EOF) {
-		ungetch(c);
-	}
+	ungetch(c);
 	return NUMBER;
 }
