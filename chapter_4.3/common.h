@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define MAXOP 100		//max size of operand or operator
+#define MAXLINE 151		//max size of line from getline()
 #define MAXVAL 100		//max depth of val stack
 #define NUMVAR 26		//number of variables
 
@@ -16,4 +17,5 @@
 #define LAST 400		//signal: take the most recently printed value
 #define ASSIGNVAR 501	//signal: assign value to variable
 #define USEVAR 502		//signal: take value of variable
-#define UNKNOWNCOMMAND -1	//signal that a unknown command was found
+#define UNKNOWNCOMMAND -100	//signal that a unknown command was found
+#define CONTINUE -200		//signal to continue the loop

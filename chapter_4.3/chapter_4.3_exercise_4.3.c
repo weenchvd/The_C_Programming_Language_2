@@ -1,4 +1,4 @@
-/** Chapter 4.3 | Exercise 4.9 */
+/** Chapter 4.3 | Exercise 4.10 */
 
 #include "common.h"
 
@@ -94,8 +94,11 @@ int main()
 		case '\n':
 			printstack(1);
 			break;
+		case CONTINUE:
+			continue;
+			break;
 		default:
-			printf("Error: unknown command %s\n", s);
+			printf("Error: unknown command \"%s\"\n", s);
 			break;
 		}
 	}

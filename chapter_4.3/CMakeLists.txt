@@ -7,7 +7,7 @@ project ("Chapter_4.3")
 
 set (CMAKE_C_STANDARD 99)
 set (FILE_NAME chapter_4.3_exercise_4.3)
-set (SOURCE_C_LIST ${FILE_NAME}.c pushpop.c getop.c getch.c)
+set (SOURCE_C_LIST ${FILE_NAME}.c pushpop.c getop.c getline.c)
 #set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/)
 set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/..)
 
