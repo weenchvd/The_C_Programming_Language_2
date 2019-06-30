@@ -13,6 +13,8 @@ set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/..)
 
 # Add source to this project's executable.
 add_executable (${FILE_NAME} ${SOURCE_C_LIST})
+add_executable (chapter_5.2_exercise_5.2 chapter_5.2_exercise_5.2.c getfloat.c)
 
 # TODO: Add tests and install targets if needed.
 install (TARGETS ${FILE_NAME} DESTINATION Build)
+install (TARGETS chapter_5.2_exercise_5.2 DESTINATION Build)
