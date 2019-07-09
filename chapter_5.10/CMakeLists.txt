@@ -13,6 +13,10 @@ set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/..)
 
 # Add source to this project's executable.
 add_executable (${FILE_NAME} ${SOURCE_C_LIST})
+add_executable (chapter_5.10_exercise_5.11_entab chapter_5.10_exercise_5.11_entab.c ngetline.c)
+add_executable (chapter_5.10_exercise_5.11_detab chapter_5.10_exercise_5.11_detab.c ngetline.c)
 
 # TODO: Add tests and install targets if needed.
 install (TARGETS ${FILE_NAME} DESTINATION Build)
+install (TARGETS chapter_5.10_exercise_5.11_entab DESTINATION Build)
+install (TARGETS chapter_5.10_exercise_5.11_detab DESTINATION Build)
