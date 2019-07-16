@@ -1,4 +1,4 @@
-/** Chapter 5.11 | Exercise 5.16 */
+/** Chapter 5.11 | Exercise 5.17 */
 
 #include <stdio.h>
 #include <string.h>
@@ -16,7 +16,7 @@ int ngetline(char* ps, int lim, char n);
 int readlines(char* lineptr[], char* plines, int maxlines);
 void writelines(char* lineptr[], int nlines);
 
-void qsort(void* lineptr[], int left, int right, int (*comp) (void*, void*), int fold, int dir);
+int wqsort(void* v[], int left, int right, int (*comp) (void*, void*), int fold, int dir, int pos1, int pos2);
 int numcmp(char* s1, char* s2);
 
 /* sort input lines */
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 	int rev = 0;
 	int fold = 0;
 	int dir = 0;
-	int i, j;
+	int i, j, pos1, pos2;
 	char c;
 	if (argc > 1 && **++argv == '-') {
 		for (i = 1; (c = *(*argv + i)) != '\0'; i++) {
@@ -56,8 +56,26 @@ int main(int argc, char* argv[])
 	if (numeric && dir) {
 		dir = 0;
 	}
+	pos1 = pos2 = 0;
+	for (argc -= 2; argc > 0; argc--) {
+		const char* ps = *++argv + 1;
+		if (**argv == '+' && (pos1 = atoi(ps)) <= 0) {
+			pos1 = 0;
+		}
+		else if (**argv == '-' && (pos2 = atoi(ps)) <= 0) {
+			pos2 = 0;
+		}
+	}
+	if (pos1 && pos2 && pos1 >= pos2) {
+		printf("---Error: The Position 1 argument must always be less than the Position 2 argument\n");
+		pos1 = pos2 = 0;
+	}
 	if ((nlines = readlines(lineptr, lines, MAXLINES)) >= 0) {
-		qsort((void**)lineptr, 0, nlines - 1, (int (*) (void*, void*)) (numeric ? numcmp : strcmp), fold, dir);
+		if (wqsort((void**)lineptr, 0, nlines - 1, (int (*) (void*, void*)) (numeric ? numcmp : strcmp),
+			fold, dir, pos1, pos2) < 0) {
+			printf("---Error: Field boundaries are outside the line boundaries\n");
+			return 1;
+		}
 		if (rev) {
 			void swap(void* v[], int i, int j);
 			for (i = 0, j = nlines - 1; i < j; i++, j--) {
@@ -100,38 +118,67 @@ void writelines(char* lineptr[], int nlines)
 	}
 }
 
-/* qsort: sort v[left]...v[right] into increasing order */
-void qsort(void* v[], int left, int right, int (*comp) (void*, void*), int fold, int dir)
+/* wqsort: sort v[left]...v[right] into increasing order */
+int wqsort(void* v[], int left, int right, int (*comp) (void*, void*), int fold, int dir, int pos1, int pos2)
 {
 	int i, last;
 	void* viptr, * vleftptr;
-	int j, len;
+	int j, len, field, cond;
 	void swap(void* v[], int i, int j);
-	if (left >= right) {			/* do nothing if array contains */
-		return;						/* fewer than two elements */
+	if (left >= right) {						/* do nothing if array contains */
+		return 0;								/* fewer than two elements */
 	}
 	swap(v, left, (left + right) / 2);
 	last = left;
+	field = pos1 || pos2;
+	cond = fold || dir || field;
 	for (i = left + 1; i <= right; i++) {
-		if (fold || dir) {
+		if (cond) {
 			len = 0;
 			viptr = (void*)strcpy(lc, (const char*)v[i]);
-			len = strlen(lc);
-			for (j = 0; lc[j] != '\0'; j++) {
-				if (fold) {
-					lc[j] = (char)tolower((int)lc[j]);
+			len = (int)strlen((const char*)viptr);
+			if (field) {
+				if (pos2 > len + 1) {
+					return -1;
 				}
-				if (dir && !(isalnum(lc[j]) || isspace(lc[j]))) {
-					lc[j] = ' ';
+				int p1, p2;
+				for (j = 0, p1 = pos1 - 1, p2 = pos2 - 1; p1 < p2; j++, p1++) {
+					lc[j] = lc[p1];
+				}
+				lc[j] = '\0';
+				len = pos2 - pos1;
+			}
+			if (fold || dir) {
+				for (j = 0; lc[j] != '\0'; j++) {
+					if (fold) {
+						lc[j] = (char)tolower((int)lc[j]);
+					}
+					if (dir && !(isalnum(lc[j]) || isspace(lc[j]))) {
+						lc[j] = ' ';
+					}
 				}
 			}
 			vleftptr = (void*)strcpy(lc + len + 1, (const char*)v[left]);
-			for (j = len + 1; lc[j] != '\0'; j++) {
-				if (fold) {
-					lc[j] = (char)tolower((int)lc[j]);
+			if (field) {
+				int len2;
+				len2 = (int)strlen((const char*)vleftptr);
+				if (pos2 > len2 + 1) {
+					return -1;
 				}
-				if (dir && !(isalnum(lc[j]) || isspace(lc[j]))) {
-					lc[j] = ' ';
+				int p1, p2;
+				for (j = len + 1, p1 = pos1 - 1 + len + 1, p2 = pos2 - 1 + len + 1; p1 < p2; j++, p1++) {
+					lc[j] = lc[p1];
+				}
+				lc[j] = '\0';
+			}
+			if (fold || dir) {
+				for (j = len + 1; lc[j] != '\0'; j++) {
+					if (fold) {
+						lc[j] = (char)tolower((int)lc[j]);
+					}
+					if (dir && !(isalnum(lc[j]) || isspace(lc[j]))) {
+						lc[j] = ' ';
+					}
 				}
 			}
 			if ((*comp) (viptr, vleftptr) < 0) {
@@ -145,8 +192,13 @@ void qsort(void* v[], int left, int right, int (*comp) (void*, void*), int fold,
 		}
 	}
 	swap(v, left, last);
-	qsort(v, left, last - 1, comp, fold, dir);
-	qsort(v, last + 1, right, comp, fold, dir);
+	if (wqsort(v, left, last - 1, comp, fold, dir, pos1, pos2) < 0) {
+		return -1;
+	}
+	if (wqsort(v, last + 1, right, comp, fold, dir, pos1, pos2) < 0) {
+		return -1;
+	}
+	return 0;
 }
 
 void swap(void* v[], int i, int j)
