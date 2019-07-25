@@ -1,4 +1,5 @@
-/** Chapter 5.12 | Exercise 5.18 */
+/** Chapter 5.12 | Exercise 5.20 */
+/* example: const unsigned long long int (*(*x(const short int*, const unsigned long long int*))[MAXLEN + a])(void, double*, char*) */
 
 #include <stdio.h>
 #include <string.h>
@@ -20,9 +21,9 @@ char out[LENGTHOUT];
 /* converts declaration to words */
 int main()
 {
-	while (gettoken() != EOF) {			/* 1st token on line */
-		strcpy(datatype, token);		/* is the datatype */
+	while (1) {			/* 1st token on line */
 		out[0] = '\0';
+		datatype[0] = '\0';
 		if (dcl() == ERROR) {			/* parse rest of line */
 			if (tokentype != '\n') {
 				getrestline();
@@ -32,8 +33,6 @@ int main()
 			tokentype = 0;
 			token[0] = '\0';
 			name[0] = '\0';
-			datatype[0] = '\0';
-			out[0] = '\0';
 			continue;
 		}
 		if (tokentype != '\n') {
@@ -44,8 +43,10 @@ int main()
 			tokentype = 0;
 			token[0] = '\0';
 			name[0] = '\0';
-			datatype[0] = '\0';
-			out[0] = '\0';
+			continue;
+		}
+		if (datatype[0] == '\0') {
+			printf("Incorrect input\n");
 			continue;
 		}
 		printf("%s: %s %s\n", name, out, datatype);
@@ -89,9 +90,14 @@ int dirdcl(void)
 		iserr = TRUE;
 		return ERROR;
 	}
-	while ((type = gettoken()) == PARENS || type == BRACKETS) {
+	while ((type = gettoken()) == PARENS || type == PARENSARG || type == BRACKETS) {
 		if (type == PARENS) {
 			strcat(out, " function returning");
+		}
+		else if (type == PARENSARG) {
+			strcat(out, " function accepting ");
+			strcat(out, token);
+			strcat(out, " arguments and returning");
 		}
 		else {
 			strcat(out, " array");
