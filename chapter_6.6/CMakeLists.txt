@@ -13,6 +13,8 @@ set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/..)
 
 # Add source to this project's executable.
 add_executable (${FILE_NAME} ${SOURCE_C_LIST})
+add_executable (chapter_6.6_exercise_6.6 chapter_6.6_exercise_6.6.c hashf2.c getword.c getch.c error.c)
 
 # TODO: Add tests and install targets if needed.
 install (TARGETS ${FILE_NAME} DESTINATION Build)
+install (TARGETS chapter_6.6_exercise_6.6 DESTINATION Build)
