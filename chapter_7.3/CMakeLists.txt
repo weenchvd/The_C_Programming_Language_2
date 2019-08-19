@@ -16,4 +16,3 @@ add_executable (${FILE_NAME} ${SOURCE_C_LIST})
 
 # TODO: Add tests and install targets if needed.
 install (TARGETS ${FILE_NAME} DESTINATION Build)
-
